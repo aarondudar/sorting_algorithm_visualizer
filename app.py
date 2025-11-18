@@ -26,6 +26,8 @@ def merge_sort(arr):
     """Merge Sort with step-by-step visualization"""
     comparisons = [0]  # Use list to make it mutable in nested functions
     steps = []
+    arr = arr.copy()  # Make a copy at the very beginning
+    steps.append(arr.copy())
     
     def merge(arr, left, mid, right):
         left_arr = arr[left:mid + 1]
@@ -64,8 +66,6 @@ def merge_sort(arr):
             merge_sort_recursive(arr, mid + 1, right)
             merge(arr, left, mid, right)
     
-    arr = arr.copy()
-    steps.append(arr.copy())
     merge_sort_recursive(arr, 0, len(arr) - 1)
     
     return arr, comparisons[0], steps
@@ -124,6 +124,15 @@ def main():
         help="Select the sorting algorithm to visualize"
     )
     
+    # Animation speed control
+    step_speed = st.sidebar.slider(
+        "Animation Speed (steps/sec)",
+        min_value=1,
+        max_value=20,
+        value=5,
+        help="Control the speed of the visualization"
+    )
+    
     # Generate random array button
     if st.sidebar.button("Generate New Array"):
         st.session_state.array = np.random.randint(1, 100, size=array_size)
@@ -179,16 +188,6 @@ def main():
         
         # Create placeholder for animation
         chart_placeholder = st.empty()
-        
-        # Animate sorting steps
-        step_speed = st.sidebar.slider(
-            "Animation Speed (steps/sec)",
-            min_value=1,
-            max_value=20,
-            value=5,
-            help="Control the speed of the visualization"
-        )
-        
         progress_bar = st.progress(0)
         
         for idx, step in enumerate(steps):
