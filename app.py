@@ -26,12 +26,14 @@ def merge_sort(arr):
     """Merge Sort with step-by-step visualization"""
     comparisons = [0]  # Use list to make it mutable in nested functions
     steps = []
-    arr = arr.copy()  # Make a copy at the very beginning
+    # Convert to list to avoid NumPy array issues
+    arr = list(arr)
     steps.append(arr.copy())
     
     def merge(arr, left, mid, right):
-        left_arr = arr[left:mid + 1]
-        right_arr = arr[mid + 1:right + 1]
+        # Create temp arrays
+        left_arr = arr[left:mid + 1].copy()
+        right_arr = arr[mid + 1:right + 1].copy()
         
         i = j = 0
         k = left
@@ -68,7 +70,7 @@ def merge_sort(arr):
     
     merge_sort_recursive(arr, 0, len(arr) - 1)
     
-    return arr, comparisons[0], steps
+    return np.array(arr), comparisons[0], steps
 
 
 def insertion_sort(arr):
